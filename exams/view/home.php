@@ -10,31 +10,80 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     include('../../header.php');
     require_once "../../config.php";
     $param_id = $_GET["subId"];
-    $sql = "SELECT * FROM exams WHERE subjectId = $param_id";
+    
+    $subName = "";
 
-    echo "<a class='btn btn-primary' href='manually.php?subId=".$param_id."'>Generate Exam Manually</a>";
-    echo "<a class='btn btn-primary' href='generate.php?subId=".$param_id."'>Generate Exam </a>";
-
-    if($result = mysqli_query($link, $sql)){
+    $sqlSub = "SELECT * FROM subjects WHERE s_id = $param_id";
+    if($result = mysqli_query($link, $sqlSub)){
         if(mysqli_num_rows($result) > 0){
             while($row = mysqli_fetch_array($result)){
-                echo "<div class='container-fluid'>";
-                    
-                    echo "<div class='card text-center' style='width: 18rem;'>";
-                        echo "<div class='card-header'>";
-                            echo "<h5> Question: ".$row['e_name']."</h5>";
-                        echo "</div>";
-
-                        echo "<div class='card-body'>";
-                            echo "<p>Total marks: ".$row['e_total']."</p>";
-                            echo "<a href='view.php?subId=".$param_id."&id=".$row['e_id']."' class='btn btn-primary'>View</a>";
-                            echo "<a href='edit.php?subId=".$param_id."&id=".$row['e_id']."' class='btn btn-primary'>Edit</a>";
-                            echo "<a href='put.php?subId=".$param_id."&id=".$row['e_id']."' class='btn btn-primary'>Edit existing </a>";
-                            echo "<a href='../controller/delete.php?subId=".$param_id."&del=".$row['e_id']."'' class='btn btn-primary'>Delete</a>";
-                        echo "</div>";
-                    echo "</div>";
-                echo "</div>";
+                $subName = $row['s_name'];
             }
+        }
+    }
+    
+    $sql = "SELECT * FROM exams WHERE subjectId = $param_id";
+    ?>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-4">
+                        <a href="../../subjects/view/home.php" class="btn btn-danger">Return</a>
+                        </div>
+                        <div class="col-md-4 text-center">
+                        <h4>Exam List (<?=$subName?>)</h4>
+                        </div>
+                        <div class="col-md-4 text-right">
+                        <a class='btn btn-primary' href='manually.php?subId=<?php echo($param_id);?>'>Manual Create</a>
+                            <a class='btn btn-primary' href='generate.php?subId=<?php echo($param_id);?>'>Auto Create </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered" id="render">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Exam paper name</th>
+                                <th scope="col">Marks</th>
+                                <th scope="col">: : :</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        
+                <?php
+                    $no = 1;
+                    if($result = mysqli_query($link, $sql)){
+                        if(mysqli_num_rows($result) > 0){
+                            while($row = mysqli_fetch_array($result)){
+                                ?>
+                                <tr>
+                                    <td><?php echo($no++);?></td>
+                                    <td>
+                                        <h5><?php echo($row['e_name']);?></h5>
+                                    </td>
+                                    <td>
+                                        <p><?php echo($row['e_total']);?></p>
+                                    </td>
+                                    <td>
+                                        <a href='view.php?subId=<?php echo($param_id);?>&id=<?php echo($row['e_id']);?>' class='btn btn-success'>View</a>
+                                        <a href="../controller/download.php?id=<?php echo($param_id);?>&examId=<?php echo($row['e_id']);?>" class='btn btn-success'>Download</a>
+                                        <a href='../controller/delete.php?subId=<?php echo($param_id);?>&del=<?php echo($row['e_id']);?>' class='btn btn-danger'>Delete</a>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
             // Free result set
             mysqli_free_result($result);
         } else{

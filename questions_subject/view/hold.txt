@@ -1,0 +1,34 @@
+<table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Question</th>
+                            <th scope="col">Mark</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">: : :</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            <?php
+                        $no = 1;
+                        while($row = mysqli_fetch_array($result)){
+                            ?>
+                            <tr>
+                                <th scope="row"><?php echo($no++);?></th>
+                                <td scope="row"><?php echo($row['q_question']);?></td>
+                                <td scope="row"><?php echo($row['q_mark']);?></td>
+                                <td scope="row"><?php echo($row['q_level']);?></td>
+                                <td scope="row">
+                                    <a href='view.php?subId=<?php echo($param_id);?>&id=<?php echo($row['q_id']);?>' class='btn btn-primary'>View</a>
+                                    <a href='add.php?subId=<?php echo($param_id);?>' class='btn btn-primary'>Add</a>
+                                    <a href='edit.php?subId=<?php echo($param_id);?>&id=<?php echo($row['q_id']);?>' class='btn btn-primary'>Edit</a>
+                                    <a href='put.php?subId=<?php echo($param_id);?>&id=<?php echo($row['q_id']);?>' class='btn btn-primary'>Edit existing </a>
+                                    <a href='../controller/delete.php?subId=<?php echo($param_id);?>&del=<?php echo($row['q_id']);?>' class='btn btn-primary'>Delete</a>
+                                </td>
+                            </tr>
+                    
+                    <?php
+                }
+            ?>
+                    </tbody>
+                </table>

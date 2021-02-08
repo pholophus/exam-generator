@@ -18,26 +18,38 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 ?>
                     <div class="wrapper">
                         <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="page-header">
-                                        <h2>View Record</h2>
-                                    </div>
-                                    <p>Please fill this form and submit to add employee record to the database.</p>
-                                    <form action="../controller/put.php" method="post">
-                                        <div class="form-group">
-                                            <label>Name</label>
-                                            <input type="text" name="s_name" class="form-control" value="<?php echo $row['s_name'];?>" >
+                            <div class="row justify-content-center">
+                                <div class="col-md-6 mt-5">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <a href="home.php" class="btn btn-success">Return</a>
+                                                </div>
+                                                <div class="col-md-6 text-center">
+                                                    <h4>Edit subject</h4>
+                                                </div>
+                                            </div>
+                                            
                                         </div>
-                                        <div class="form-group">
-                                            <label>Code</label>
-                                            <input type="text" name="s_code" class="form-control" value="<?php echo $row['s_code'];?>" >
-                                        </div>
+                                        <div class="card-body">
+                                        <form action="../controller/put.php" method="post">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input type="text" name="s_name" class="form-control" value="<?php echo $row['s_name'];?>" >
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Code</label>
+                                                <input type="text" name="s_code" class="form-control" value="<?php echo $row['s_code'];?>" >
+                                            </div>
 
-                                        <button class="btn" type="submit" name="update" >Update</button>
-                                        
-                                        <a href="home.php" class="btn btn-default">Cancel</a>
-                                    </form>
+                                            <button class="btn btn-primary" type="submit" name="update">Add</button>
+                                            
+                                            <a href="home.php" class="btn btn-danger">Cancel</a>
+                                        </form>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>        
                         </div>

@@ -13,71 +13,86 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     $subId = $_GET["subId"];
     $sql = "SELECT * FROM exams WHERE e_id = $param_id";
 
-    echo "<a href='home.php?subId=".$subId."' class='btn btn-default'>Back</a>";
+    ?>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <?php
+                                if($result = mysqli_query($link, $sql)){
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_array($result)){
+                                        ?>
+                                            <div class="col-md-3">
+                                                <a href='home.php?subId=<?php echo($subId);?>' class='btn btn-danger'>Back</a>
+                                            </div>
+                                            
+                                            <div class="col-md-6 text-center">
+                                                <h4><?php echo($row['e_name']);?></h4>
+                                            </div>
 
-    if($result = mysqli_query($link, $sql)){
-        if(mysqli_num_rows($result) > 0){
-            while($row = mysqli_fetch_array($result)){
-                ?>
-                    <div class="wrapper">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="page-header">
-                                        <h2>View Record</h2>
-                                    </div>
-                                    <p>Please fill this form and submit to add employee record to the database.</p>
-                                    <form action="../controller/edit.php" method="post">
-                                        <div class="form-group">
-                                            <label>Name</label>
-                                            <input type="text" name="e_name" class="form-control" value="<?=$row['e_name']?>" disabled>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Total Marks</label>
-                                            <input type="text" name="e_total" class="form-control" value="<?=$row['e_total']?>" disabled>
-                                        </div>
-                                        <input type="hidden" name="edit_id" value="<?php echo $param_id; ?>">
-                                        <input type="hidden" name="subject_id" value="<?php echo $subId; ?>">
-
-                                        
-                                    </form>
-                                </div>
-                            </div>        
+                                            <div class="col-md-3 text-right">
+                                                <h4>Total marks: <?=$row['e_total']?></h4>
+                                            </div>
+                                        <?php
+                                        }
+                                    }
+                                }     
+                            ?>
+                            
                         </div>
                     </div>
-                <?php
-            }
-        }
-    }
-    $sqlQues = "SELECT * FROM questions WHERE subjectId = $subId ";
-    if($result = mysqli_query($link, $sqlQues)){
-        if(mysqli_num_rows($result) > 0){
-            $no =0;
-            while($row = mysqli_fetch_array($result)){
-                $no++;
-                ?><div class='card'>
-                        <div class='card-header'>
-                            Test
-                        </div>
-                        <div class='card-body'>
-                            <div class='form-check-inline'>
-                                <label class='form-check-label' for='check1'>
-                                    <p>Question <?= $no ?>: <?=$row['q_question']?></p>
-                                    <p>Mark: <?=$row['q_mark']?></p>
-                                    <p>Question Level: <?=$row['q_level']?></p>
-                                </label>
-                            </div>
-                        </div>
+                    <div class="card-body">
+                        <?php
+                            $sqlQues = "SELECT exams.*, exam_paper.*, questions.* FROM exam_paper INNER JOIN exams ON exam_paper.ep_exam = exams.e_id INNER JOIN questions ON exam_paper.ep_question = questions.q_id WHERE exams.e_id = $param_id";
+    
+                            if($result = mysqli_query($link, $sqlQues)){
+                                if(mysqli_num_rows($result) > 0){
+                                    $no = 0;
+                                    while($row = mysqli_fetch_array($result)){
+                                        $no++;
+                                        ?>
+                                            <div class='card my-4'>
+                                                <div class='card-header'>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            Question no.<?= $no;?>
+                                                        </div>
+                                                        <div class="col-md-6"></div>
+                                                        <div class="col-md-3 text-right">
+                                                            <a class="btn btn-primary" href="../../questions_subject/view/view.php?subId=<?php echo($subId);?>&id=<?php echo($row['q_id']);?>">View</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='card-body'>
+                                                    <div class='form-check-inline'>
+                                                        <label class='form-check-label' for='check1'>
+                                                            <p>Question: <?=$row['q_question']?></p>
+                                                            <p>Mark: <?=$row['q_mark']?></p>
+                                                            <p>Question Level: <?=$row['q_level']?></p>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php
+                                    }
+                                    // Free result set
+                                    mysqli_free_result($result);
+                                } else{
+                                    echo "<p class='lead'><em>No records were found.</em></p>";
+                                }
+                            } else{
+                                echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                            }
+                        ?>
                     </div>
-                <?php
-            }
-            // Free result set
-            mysqli_free_result($result);
-        } else{
-            echo "<p class='lead'><em>No records were found.</em></p>";
-        }
-    } else{
-        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-    }
-    }
+                </div>
+            </div>
+        </div>
+        
+    <?php
+
+    
+}
 ?>

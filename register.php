@@ -78,7 +78,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
-                header("location: ../../login.php");
+                header("location: login.php");
             } else{
                 echo "Something went wrong. Please try again later.";
             }
@@ -93,43 +93,65 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 ?>
  
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
+    <title>Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="auth.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
 </head>
-<body>
-    <div class="wrapper">
-        <h2>Sign Up</h2>
-        <p>Please fill this form to create an account.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>    
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
-                <span class="help-block"><?php echo $password_err; ?></span>
+<body style=" background-repeat: no-repeat; height: 100%; background-attachment: fixed; margin: 0;">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-9 mt-5"></div>
+            <div class="col-md-9 mt-5"></div> 
+            <div class="col-md-9 mt-5">
+                <div class="row" >
+                    <div class="col-md-7 text-center py-5" style="background-color:#f2f2f2; box-shadow: 0px 5px; border:0; border: 1px solid black;  border-bottom-left-radius:20px; border-top-left-radius:20px; position: relative;">
+                        <!--<img src="images/colleague.jpg" height="400" width="580" alt="" style="object-fit:cover;">-->
+                        <img src="images/remotely.svg" height="400" width="580" alt="">
+                        <div class="text-center ml-3" style="position: absolute; bottom: 5px; left: 150px;">
+                            <h4>Question Recommender System</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-5 py-5" style="background-color:#f2f2f2; box-shadow: 5px 5px; border-bottom-right-radius:20px; border:0; border: 1px solid black;  border-top-right-radius:20px;">
+                        <div class="mx-5 mt-3">
+                            <div class="text-center">
+                                <img src="images/user-logo.png" height="70" alt="">
+                                <h2 class="mt-3">Welcome</h2>
+                            </div>
+                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                                    <label>Username</label>
+                                    <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+                                    <span class="help-block" style="color: red;"><?php echo $username_err; ?></span>
+                                </div>    
+                                <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                                    <label>Password</label>
+                                    <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+                                    <span class="help-block" style="color: red;"><?php echo $password_err; ?></span>
+                                </div>
+                                <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
+                                    <label>Confirm Password</label>
+                                    <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+                                    <span class="help-block" style="color: red;"><?php echo $confirm_password_err; ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-primary" value="Submit">
+                                </div>
+                                <p>Already have an account? <a href="login.php">Login here</a>.</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
-                <span class="help-block"><?php echo $confirm_password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit">
-                <input type="reset" class="btn btn-default" value="Reset">
-            </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
-        </form>
-    </div>    
+        </div>   
+    </div>
 </body>
 </html>

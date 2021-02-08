@@ -11,11 +11,11 @@ if (isset($_POST['update'])) {
     $s = mysqli_query($link, "INSERT INTO subjects (s_name, s_code, userId) VALUES ('$name', '$code', '$userId')"); 
 
     if($s){
-        $_SESSION['message'] = "Exam saved"; 
-        header("location: ../view/home.php");
+        $_SESSION['message'] = "Subject saved"; 
+        header('location: ../view/home.php');
     }else{
-        $_SESSION['message'] = "Filed to save"; 
-        header("location: ../view/home.php");
+        $_SESSION['message'] = "Subject failed to save"; 
+        header('location: ../view/home.php');
     }
     
 }

@@ -10,8 +10,6 @@ if (isset($_POST['save'])) {
     $questions = $_POST['question'];
     $key = uniqid("exam");
 
-    //echo($key);
-
     print_r($questions);
 
     $no = sizeof($questions);
@@ -33,11 +31,12 @@ if (isset($_POST['save'])) {
     echo("id ".$id);
 
     for($i=0; $i< count($questions); $i++){
-        $qid = $questions[$i];
-        mysqli_query($link, "UPDATE questions SET examId = '$id' WHERE q_id='$qid'");
+        $q_seperate = explode(" ",$questions[$i]);
+        $qid = $q_seperate[0];
+       mysqli_query($link, "INSERT INTO exam_paper (ep_exam, ep_question) VALUES ('$id', '$qid')");
     }
 
     
     $_SESSION['message'] = "Exam saved"; 
-    //header("location: ../view/home.php?subId=$subId");
+    header("location: ../view/home.php?subId=$subId");
 }

@@ -10,7 +10,9 @@ if (isset($_POST['update'])) {
     $level = $_POST['q_level'];
     $subId = $_POST['subject_id'];
 
-    mysqli_query($link, "INSERT INTO questions (q_question, q_answer, q_mark, q_level, subjectId) VALUES ('$question', '$answer', '$mark', '$level', '$subId')"); 
+    //var_dump($_POST);
+
+    mysqli_query($link, "INSERT INTO questions (q_question, q_answer, q_mark, q_level, subjectId, chapterId, examId) VALUES ('$question', '$answer', '$mark', '$level', '$subId', 0, 0)"); 
     $_SESSION['message'] = "Question saved"; 
     header("location: ../view/home.php?subId=$subId");
 }
